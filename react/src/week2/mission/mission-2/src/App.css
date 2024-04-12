@@ -1,0 +1,54 @@
+body {
+  background-color: rgb(17, 17, 53);
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.movie-container {
+  width: 400px;
+  margin: 16px;
+  background-color: rgb(43, 43, 87);
+  border-radius: 10px;
+  position: relative;
+}
+
+img {
+  border-radius: 10px;
+}
+
+.movie-info {
+  display: flex;
+  color:white;
+  padding: 20px;
+  padding-bottom: 40px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.movie-info h4 {
+  margin: 0;
+}
+
+.movie-overview {
+  position: absolute;
+  top: 0;
+  height: 685px;
+  width: 400px;
+  border-radius: 10px;
+  background-color: rgba(0, 0, 0, 0.808);
+  opacity: 0;
+  color: white;
+}
+
+.movie-overview p {
+  margin: 20px;
+  margin-top: 40px;
+}
+
+.movie-overview:hover {
+  opacity: 1;
+}
