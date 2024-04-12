@@ -1,0 +1,27 @@
+.container {
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+}
+
+.modal {
+  background-color: #fff;
+  padding: 24px 16px;
+  border-radius: 4px;
+  width: 320px;
+}
+
+#title {
+  font-size: 24px;
+  font-weight: bold;
+}
+
+#closeBtn {
+  float: right;
+}
