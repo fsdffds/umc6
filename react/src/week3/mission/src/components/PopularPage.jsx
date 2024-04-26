@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Movie from "./MovieDetailPage";
+import Movie from "./Movie";
 import Loading from "./Loading";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 const PopularContainer = styled.div`
   .container {
@@ -36,7 +37,6 @@ function PopularPage() {
     axios
     .request(options)
     .then(function (response) {
-      // console.log(response.data);
       setLoading(false);
       const info = response.data.results.map(datas => {
         return {
@@ -45,6 +45,7 @@ function PopularPage() {
           poster_path: datas.poster_path,
           vote_average: datas.vote_average,
           overview: datas.overview,
+          release_date: datas.release_date,
         };
       });
       setMovies(info);
@@ -72,6 +73,7 @@ function PopularPage() {
                 poster_path={movie.poster_path}
                 vote_average={movie.vote_average}
                 overview = {movie.overview}
+                release_date = {movie.release_date}
               />
               );
           })}

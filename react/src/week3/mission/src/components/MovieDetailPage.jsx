@@ -1,82 +1,69 @@
-import React, {useState} from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import styled from "styled-components";
+import { useParams, useLocation } from "react-router-dom";
+import { FaStar } from "react-icons/fa";
 
-const MovieContainer = styled.div`
-.movie-container {
+const Container = styled.div`
+  .container {
+    display: flex;
+    // background-image : url(movie_url + movieInfo.poster_path);
+    margin: 120px;
+    align-items: center;
+  }
+  .left-container {
+    margin: 0 20px;
+  }
+  .right-container {
+    line-height: 2.5;    
+    margin: 0 70px;
+  }
+  h3 {
+    font-size: 35px;
+  }
+  .right-container div {
+    font-size: 20px;
+    display: flex;
+  }
+  .right-container .vote {
+    
+  }
+`;
+const StarContainer = styled.div`
+  color: yellow;
   display: flex;
-  width: 400px;
-  margin: 16px;
-  background-color: rgb(43, 43, 87);
-  border-radius: 10px;
-  position: relative;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-
-img {
-  border-radius: 10px;
-}
-
-.movie-info {
-  display: flex;
-  color:white;
-  padding: 20px;
-  padding-bottom: 40px;
-  justify-content: space-between;
   align-items: center;
-}
-
-.movie-info h4 {
-  margin: 0;
-}
-
-.movie-overview {
-  position: absolute;
-  top: 0;
-  height: 685px;
-  width: 400px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.808);
-  opacity: 0;
-  color: white;
-}
-
-.movie-overview p {
-  margin: 20px;
-  margin-top: 40px;
-  line-height: 1.5;
-}
-
-.movie-overview:hover {
-  opacity: 1;
-}
+  margin-left: 5px;
 `;
 
-function Movie({poster_path, title, vote_average, overview}) {
-  const [isMouseOver, setIsMouseOver] = useState(false);
-
+function MovieDetailPage() {
+  const location = useLocation();
+  const movieInfo = {...location.state};
   const movie_url = "https://image.tmdb.org/t/p/w400/";
+  const floorAvg = Math.floor(movieInfo.vote_average);
 
   return (
-    <MovieContainer>
-      <div className="movie-container"
-      onMouseEnter={() => setIsMouseOver(true)}
-      onMouseLeave={() => setIsMouseOver(false)}>
-        <img src={movie_url + poster_path} alt="이미지" />
-        <div className="movie-info">
-          <h4>{title}</h4>
-          <span>{vote_average}</span>
+    <Container>
+      <div className="container">
+        <div className="left-container">
+          <img src={movie_url + movieInfo.poster_path} alt="이미지" />
         </div>
-
-        {isMouseOver && (
-        <div className="movie-overview">
-          <p>{title}</p>
-          <p>{overview}</p>
+        <div className="right-container">
+          <h3>{movieInfo.title}</h3>
+          <div className="vote">평점
+          <StarContainer>
+            {[...Array(floorAvg)].map((_, index) => (
+              <FaStar key={index} className="star" />
+            ))}
+          </StarContainer>
+          </div>
+          <div>개봉일 {movieInfo.release_date}</div>
+          <div>줄거리</div>
+          <div>{movieInfo.overview ? movieInfo.overview : "TMDB에서 제공하는 API에 상세 줄거리 정보가 없습니다."}</div>
         </div>
-      )}
       </div>
-    </MovieContainer>
+    </Container>
   );
 }
 
-export default Movie;
+export default MovieDetailPage;

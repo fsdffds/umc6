@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Routes, NavLink, Outlet } from "react-router-dom";
 import styled from "styled-components";
 import MainPage from "./components/MainPage";
@@ -6,6 +6,7 @@ import PopularPage from "./components/PopularPage";
 import NowPlayingPage from "./components/NowPlayingPage";
 import TopRatedPage from "./components/TopRatedPage";
 import UpComingPage from "./components/UpComing";
+import MovieDetailPage from "./components/MovieDetailPage";
 import './App.css';
 
 const NavContainer = styled.div`
@@ -42,6 +43,12 @@ const NavContainer = styled.div`
   .nav li a.active {
     color: yellow;
   }
+  .nav button {
+    border: 0;
+    background-color: transparent;
+    color: white;
+    font-size: 24px;
+  }
 `;
 
 const FooterContainer = styled.div`
@@ -63,7 +70,36 @@ const FooterContainer = styled.div`
   }
 `;
 
-function Nav() {
+const NotFoundContainer = styled.div`
+  .container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 300px;
+    line-height: 2;
+  }
+  h1 {
+    font-size: 50px;
+  }
+  p {
+    font-size: 30px;
+  }
+  .error {
+    font-style: italic;
+  }
+  .link {
+    text-decoration-line: none;
+    color: white;
+  }
+`;
+
+function Nav({ isLogin, setIsLogin }) {
+
+  function handleClick() {
+    setIsLogin(!isLogin);
+  }
+
   return (
     <NavContainer>
       <ul className="nav">
@@ -74,10 +110,11 @@ function Nav() {
         </div>
         <div className="menu">
           <li>
-            <NavLink to="/admin"
+            <NavLink to="/"
+              onClick={handleClick}
               className={({ isActive }) => {
                 return isActive ? "active" : "";
-              }}>회원가입</NavLink>
+              }}>{isLogin ? "로그아웃" : "로그인"}</NavLink>
           </li>
           <li>
             <NavLink to="/popular"
@@ -111,9 +148,10 @@ function Nav() {
 }
 
 function Home() {
+  const [isLogin, setIsLogin] = useState(false);
   return (
     <>
-      <Nav/>
+      <Nav isLogin={isLogin} setIsLogin={setIsLogin}/>
       <Outlet />
       <Footer/>
     </>
@@ -130,20 +168,36 @@ function Footer() {
   );
 }
 
+function NotFound() {
+  return (
+    <NotFoundContainer>
+      <div className="container">
+        <h1>Oops!</h1>
+        <p>예상치 못한 에러가 발생했습니다.</p>
+        <p className="error">Not Found</p>
+        <p><NavLink
+        to="/"
+        className="link">메인으로 돌아가기</NavLink></p>
+      </div>
+    </NotFoundContainer>
+  );
+}
+
 function App() {
+
   return (
     <BrowserRouter>
-      {/* <Container className="wrapper"> */}
         <Routes>
-          <Route element={<Home/>}>
+          <Route element={<Home />}>
             <Route exact path="/" element={<MainPage/>}></Route>
             <Route exact path="/popular" element={<PopularPage/>}></Route>
             <Route exact path="/nowplaying" element={<NowPlayingPage/>}></Route>
             <Route exact path="/toprated" element={<TopRatedPage/>}></Route>
             <Route exact path="/upcoming" element={<UpComingPage/>}></Route>
+            <Route exact path="/movie/:title" element={<MovieDetailPage/>}></Route>
           </Route>
-          </Routes>
-      {/* </Container> */}
+          <Route exact path="/*" element={<NotFound/>}></Route>
+        </Routes>
     </BrowserRouter>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Movie from "./MovieDetailPage";
+import Movie from "./Movie";
 import Loading from "./Loading";
 
 const UpComingContainer = styled.div`
@@ -36,7 +36,6 @@ function UpComingPage() {
     axios
     .request(options)
     .then(function (response) {
-      // console.log(response.data);
       setLoading(false);
       const info = response.data.results.map(datas => {
         return {
@@ -45,6 +44,7 @@ function UpComingPage() {
           poster_path: datas.poster_path,
           vote_average: datas.vote_average,
           overview: datas.overview,
+          release_date: datas.release_date,
         };
       });
       setMovies(info);
@@ -57,6 +57,7 @@ function UpComingPage() {
   useEffect(() => {
     showMovies();
   }, [])
+
   return (
     <UpComingContainer>
       {loading ? <Loading /> : null}
@@ -71,6 +72,7 @@ function UpComingPage() {
                 poster_path={movie.poster_path}
                 vote_average={movie.vote_average}
                 overview = {movie.overview}
+                release_date = {movie.release_date}
               />
               );
           })}

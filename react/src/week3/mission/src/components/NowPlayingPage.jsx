@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import Movie from "./MovieDetailPage";
+import Movie from "./Movie";
 import Loading from "./Loading";
 
 const NowPlayingContainer = styled.div`
@@ -45,6 +45,7 @@ function NowPlayingPage() {
           poster_path: datas.poster_path,
           vote_average: datas.vote_average,
           overview: datas.overview,
+          release_date : datas.release_date,
         };
       });
       setMovies(info);
@@ -71,6 +72,7 @@ function NowPlayingPage() {
                 poster_path={movie.poster_path}
                 vote_average={movie.vote_average}
                 overview = {movie.overview}
+                release_date = {movie.release_date}
               />
               );
           })}
