@@ -38,17 +38,18 @@ function PopularPage() {
     .request(options)
     .then(function (response) {
       setLoading(false);
-      const info = response.data.results.map(datas => {
-        return {
-          id: datas.id,
-          title: datas.title,
-          poster_path: datas.poster_path,
-          vote_average: datas.vote_average,
-          overview: datas.overview,
-          release_date: datas.release_date,
-        };
-      });
-      setMovies(info);
+      // const info = response.data.results.map(datas => {
+      //   return {
+      //     id: datas.id,
+      //     title: datas.title,
+      //     poster_path: datas.poster_path,
+      //     vote_average: datas.vote_average,
+      //     overview: datas.overview,
+      //     release_date: datas.release_date,
+      //   };
+      // });
+      // setMovies(info);
+      setMovies(response.data.results);
     })
     .catch(function (error) {
       console.error(error);

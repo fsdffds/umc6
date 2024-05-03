@@ -11,47 +11,47 @@ const MovieContainer = styled.div`
   background-color: rgb(43, 43, 87);
   border-radius: 10px;
   position: relative;
-  justify-content: center;
   flex-wrap: wrap;
 }
 
 img {
   border-radius: 10px;
+  justify-content: center;
 }
 
 .movie-info {
   display: flex;
-  color:white;
+  width: 400px;
+  color: white;
   padding: 20px;
   padding-bottom: 40px;
-  justify-content: space-between;
-  align-items: center;
+  // justify-content: center;
+  // align-items: center;
+}
+span {
+  margin-left: auto;
 }
 
-.movie-info h4 {
-  margin: 0;
-}
+// .movie-overview {
+//   position: absolute;
+//   top: 0;
+//   height: 685px;
+//   width: 400px;
+//   border-radius: 10px;
+//   background-color: rgba(0, 0, 0, 0.808);
+//   opacity: 0;
+//   color: white;
+// }
 
-.movie-overview {
-  position: absolute;
-  top: 0;
-  height: 685px;
-  width: 400px;
-  border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.808);
-  opacity: 0;
-  color: white;
-}
+// .movie-overview p {
+//   margin: 20px;
+//   margin-top: 40px;
+//   line-height: 1.5;
+// }
 
-.movie-overview p {
-  margin: 20px;
-  margin-top: 40px;
-  line-height: 1.5;
-}
-
-.movie-overview:hover {
-  opacity: 1;
-}
+// .movie-overview:hover {
+//   opacity: 1;
+// }
 `;
 
 function Movie({id, poster_path, title, vote_average, overview, release_date}) {
@@ -72,7 +72,7 @@ function Movie({id, poster_path, title, vote_average, overview, release_date}) {
         <img src={movie_url + poster_path} alt="이미지" />
         <div className="movie-info">
           <h4>{title}</h4>
-          <span>{vote_average}</span>
+          <span>⭐{vote_average}</span>
         </div>
       </div>
     </MovieContainer>

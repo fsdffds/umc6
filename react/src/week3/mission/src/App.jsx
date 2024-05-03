@@ -7,6 +7,7 @@ import NowPlayingPage from "./components/NowPlayingPage";
 import TopRatedPage from "./components/TopRatedPage";
 import UpComingPage from "./components/UpComing";
 import MovieDetailPage from "./components/MovieDetailPage";
+import Signup from "./components/Signup";
 import './App.css';
 
 const NavContainer = styled.div`
@@ -96,9 +97,9 @@ const NotFoundContainer = styled.div`
 
 function Nav({ isLogin, setIsLogin }) {
 
-  function handleClick() {
-    setIsLogin(!isLogin);
-  }
+  // function handleClick() {
+  //   setIsLogin(!isLogin);
+  // }
 
   return (
     <NavContainer>
@@ -110,11 +111,12 @@ function Nav({ isLogin, setIsLogin }) {
         </div>
         <div className="menu">
           <li>
-            <NavLink to="/"
-              onClick={handleClick}
+            <NavLink to="/signup"
+              // onClick={handleClick}
               className={({ isActive }) => {
                 return isActive ? "active" : "";
-              }}>{isLogin ? "로그아웃" : "로그인"}</NavLink>
+              // }}>{isLogin ? "로그아웃" : "로그인"}</NavLink>
+              }}>회원가입</NavLink>
           </li>
           <li>
             <NavLink to="/popular"
@@ -148,10 +150,11 @@ function Nav({ isLogin, setIsLogin }) {
 }
 
 function Home() {
-  const [isLogin, setIsLogin] = useState(false);
+  // const [isLogin, setIsLogin] = useState(false);
   return (
     <>
-      <Nav isLogin={isLogin} setIsLogin={setIsLogin}/>
+      {/* <Nav isLogin={isLogin} setIsLogin={setIsLogin}/> */}
+      <Nav />
       <Outlet />
       <Footer/>
     </>
@@ -190,6 +193,7 @@ function App() {
         <Routes>
           <Route element={<Home />}>
             <Route exact path="/" element={<MainPage/>}></Route>
+            <Route exact path="/signup" element={<Signup/>}></Route>
             <Route exact path="/popular" element={<PopularPage/>}></Route>
             <Route exact path="/nowplaying" element={<NowPlayingPage/>}></Route>
             <Route exact path="/toprated" element={<TopRatedPage/>}></Route>
