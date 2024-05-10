@@ -57,17 +57,18 @@ span {
 function Movie({id, poster_path, title, vote_average, overview, release_date}) {
 
   const movie_url = "https://image.tmdb.org/t/p/w400/";
-
+  
   const navigate = useNavigate();
 
   function handleClick() {
-    navigate(`/movie/${title}`, {state: {id, poster_path, title, vote_average, overview, release_date}});
+    navigate(`/movie/${id}`, {state: {id, poster_path, title, vote_average, overview, release_date}});
   }
 
   return (
     <MovieContainer>
       <div className="movie-container"
         onClick={handleClick}
+        key={id}
         >
         <img src={movie_url + poster_path} alt="이미지" />
         <div className="movie-info">

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Routes, NavLink, Outlet } from "react-router-dom";
+import { BrowserRouter, Route, Routes, NavLink, Outlet, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MainPage from "./components/MainPage";
 import PopularPage from "./components/PopularPage";
@@ -187,7 +187,7 @@ function NotFound() {
 }
 
 function App() {
-
+  
   return (
     <BrowserRouter>
         <Routes>
@@ -198,7 +198,7 @@ function App() {
             <Route exact path="/nowplaying" element={<NowPlayingPage/>}></Route>
             <Route exact path="/toprated" element={<TopRatedPage/>}></Route>
             <Route exact path="/upcoming" element={<UpComingPage/>}></Route>
-            <Route exact path="/movie/:title" element={<MovieDetailPage/>}></Route>
+            <Route exact path="/movie/:id" element={<MovieDetailPage/>}></Route>
           </Route>
           <Route exact path="/*" element={<NotFound/>}></Route>
         </Routes>

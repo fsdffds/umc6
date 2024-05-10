@@ -3,7 +3,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Movie from "./Movie";
 import Loading from "./Loading";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useParams, useLocation, Link } from "react-router-dom";
 
 const PopularContainer = styled.div`
   .container {
@@ -18,14 +18,46 @@ const PopularContainer = styled.div`
   }
 `;
 
+const MovieContainer = styled.div`
+.movie-container {
+  display: flex;
+  width: 400px;
+  margin: 16px;
+  background-color: rgb(43, 43, 87);
+  border-radius: 10px;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+img {
+  border-radius: 10px;
+  justify-content: center;
+}
+
+.movie-info {
+  display: flex;
+  width: 400px;
+  color: white;
+  padding: 20px;
+  padding-bottom: 40px;
+  // justify-content: center;
+  // align-items: center;
+}
+span {
+  margin-left: auto;
+}
+`;
+
 function PopularPage() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const movie_url = "https://image.tmdb.org/t/p/w400/";
+
   const options = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/popular',
-    params: {language: 'en-US', page: '1'},
+    params: {language: 'ko-KR', page: '1'},
     headers: {
       accept: 'application/json',
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NmVhODk1ZWJhNDE2Yjc2YTk4MTZkOWQ1Nzc0ZDBjZSIsInN1YiI6IjY2MWU5YWI4NmQ5ZmU4MDE3ZDYwNmM5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TrsJisYxDoxOwAfg5jjHOj-3mvInGe-rqKtkM4xlQvA'
@@ -38,17 +70,6 @@ function PopularPage() {
     .request(options)
     .then(function (response) {
       setLoading(false);
-      // const info = response.data.results.map(datas => {
-      //   return {
-      //     id: datas.id,
-      //     title: datas.title,
-      //     poster_path: datas.poster_path,
-      //     vote_average: datas.vote_average,
-      //     overview: datas.overview,
-      //     release_date: datas.release_date,
-      //   };
-      // });
-      // setMovies(info);
       setMovies(response.data.results);
     })
     .catch(function (error) {
@@ -70,12 +91,13 @@ function PopularPage() {
               return (
                 <Movie
                 key={movie.id}
+                id={movie.id}
                 title={movie.title}
                 poster_path={movie.poster_path}
                 vote_average={movie.vote_average}
                 overview = {movie.overview}
                 release_date = {movie.release_date}
-              />
+                />
               );
           })}
         </div>

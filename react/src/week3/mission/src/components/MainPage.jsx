@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { BiSolidCameraMovie } from "react-icons/bi";
 import { FaSearch } from "react-icons/fa";
 import axios from 'axios';
+import { useNavigate, useParams } from "react-router-dom";
 
 const BannerComponent = styled.div`
   .container {
@@ -30,12 +31,14 @@ const MainComponent = styled.div`
   .movie {
     display: flex;
     align-items: center;
+    justify-content: center;
   }
   h1 {
     font-size: 40px;
     font-weight: bold;
     margin: 50px;
     margin-left: 10px;
+    margin-bottom: 40px;
   }
   .search {
     display: flex;
@@ -43,10 +46,10 @@ const MainComponent = styled.div`
     margin-top: 10px;
   }
   input {
-    width: 350px;
-    height: 30px;
+    width: 380px;
+    height: 35px;
     border-radius: 20px;
-    margin-right: 15px;
+    margin-right: 5px;
   }
   button {
     background-color:transparent;
@@ -76,6 +79,28 @@ const MainComponent = styled.div`
     margin: 20px;
     width: 300px;
     height: 550px;
+    position: relative;
+  }
+  .results {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .hover_movie {
+    position: absolute;
+    opacity: 0;
+    width: 300px;
+    height: 550px;
+    top: 0;
+  }
+  .hover_movie: hover {
+    background-color: black;
+    color: white;
+    opacity: 1;
+  }
+  .hover_movie p {
+    margin: 20px;
+    line-height: 1.2;
+    font-size: 16px;
   }
   .search_info {
     display: flex;
@@ -89,7 +114,6 @@ const MainComponent = styled.div`
     margin-left: auto;
   }
 `;
-
 
 function Banner() {
   return (
@@ -105,6 +129,8 @@ function Main() {
   const [query, setQuery] = useState("");
   const [movies, setMovies] = useState([]);
   const [filtered, setFiltered] = useState([]);
+  const [isMouseOver, setIsMouseOver] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const movie_url = "https://image.tmdb.org/t/p/w300";
 
@@ -119,14 +145,19 @@ function Main() {
   };
 
   useEffect(() => {
-    axios
+    const delayDebounceTimer = setTimeout(() => {
+      setLoading(true);
+      axios
       .request(options)
       .then(function (response) {
+        setLoading(false);
         setMovies(response.data.results);
       })
       .catch(function (error) {
         console.error(error);
       });
+    }, 1000);
+    return () => clearTimeout(delayDebounceTimer);
   }, [query])
 
   const searchItems = (e) => {
@@ -138,13 +169,14 @@ function Main() {
     setFiltered(filteredData)
   }
 
+  const navigate = useNavigate();
 
   return (
     <MainComponent>
       <div className="main">
         <div className="movie">
           {/* <BiSolidCameraMovie size="50"color="#FF748C"/> */}
-          <h1>📽️ Find your movies !</h1>
+          <h1>📽️Find your movies !</h1>
         </div>
         <div className="search">
           <input type="text"
@@ -152,19 +184,33 @@ function Main() {
             onChange={searchItems}/>
           <button><FaSearch size="40" color="#FFC0CB"/></button>
         </div>
-
         <div className="search_component">
-          {filtered.map((item) => {
+        {loading ? (<div>데이터를 받아오는 중 입니다</div>) : (
+          <div className="results">
+            {filtered.map((item) => {
             return (
-              <div className="search_movie" key={item.id}>
+              <div className="search_movie" 
+                key={item.id}
+                onMouseEnter={() => setIsMouseOver(true)}
+                onMouseLeave={() => setIsMouseOver(false)}
+                onClick={() => navigate(`/movie/${item.id}`, {state: {...item}})}
+              >
                 <img src={`${movie_url}${item.poster_path}`} alt="이미지" />
                 <div className="search_info">
                   <p>{item.title}</p>
                   <span>⭐{item.vote_average}</span>
                 </div>
+                {isMouseOver && (
+                  <div className="hover_movie">
+                  <p>{item.title}</p>
+                  <p>{item.overview}</p>
+                </div>
+                )}
               </div>
             )
           })}
+          </div>
+        )}
         </div>
       </div>
     </MainComponent>

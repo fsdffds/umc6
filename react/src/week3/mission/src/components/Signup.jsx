@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   .login {
@@ -44,6 +44,12 @@ const Container = styled.div`
     margin-bottom: 100px;
   }
   .check p {
+    font-size: 24px;
+    margin: 10px;
+  }
+  .homeLink {
+    text-decoration: none;
+    color: white;
     font-size: 24px;
     margin: 10px;
   }
@@ -147,7 +153,7 @@ function Signup() {
         </div>
         <div className="check">
           <p>이미 아이디가 있으신가요?</p>
-          <p>로그인 페이지로 이동하기</p>
+          <Link to="/" className="homeLink">로그인 페이지로 이동하기</Link>
         </div>
       </div>
     </Container>

@@ -24,7 +24,7 @@ function UpComingPage() {
   const options = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/upcoming',
-    params: {language: 'en-US', page: '1'},
+    params: {language: 'ko-KR', page: '1'},
     headers: {
       accept: 'application/json',
       Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI1NmVhODk1ZWJhNDE2Yjc2YTk4MTZkOWQ1Nzc0ZDBjZSIsInN1YiI6IjY2MWU5YWI4NmQ5ZmU4MDE3ZDYwNmM5OSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.TrsJisYxDoxOwAfg5jjHOj-3mvInGe-rqKtkM4xlQvA'
@@ -68,6 +68,7 @@ function UpComingPage() {
               return (
                 <Movie
                 key={movie.id}
+                id={movie.id}
                 title={movie.title}
                 poster_path={movie.poster_path}
                 vote_average={movie.vote_average}
