@@ -219,10 +219,12 @@ function Main() {
 
 function MainPage() {
   return(
+    <>
       <div className="wrapper">
         <Banner />
         <Main />
       </div>
+    </>
   );
 }
 

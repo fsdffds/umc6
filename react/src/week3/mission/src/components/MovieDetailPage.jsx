@@ -36,6 +36,12 @@ const MovieContainer = styled.div`
     align-items: center;
     margin-left: 5px;
   }
+  @media screen and (min-width: 320px) and (max-width: 1023px) {
+    .container {
+      display: flex;
+      flex-direction: column;
+    }
+  }
 `;
 
 const CreditContainer = styled.div`

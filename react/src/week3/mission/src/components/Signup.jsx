@@ -1,4 +1,5 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
+import axios from "axios";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
@@ -28,6 +29,10 @@ const Container = styled.div`
     border: none;
     margin-top: 30px;
   }
+  small {
+    margin-top: 10px;
+    color: red;
+  }
   button {
     width: 600px;
     height: 55px;
@@ -47,7 +52,7 @@ const Container = styled.div`
     font-size: 24px;
     margin: 10px;
   }
-  .homeLink {
+  .Link {
     text-decoration: none;
     color: white;
     font-size: 24px;
@@ -58,17 +63,45 @@ const Container = styled.div`
 function Signup() {
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
-    navigate('/');
-    alert("회원가입 성공");
+    // alert("회원가입 성공");
+    try {
+      const res = await axios.post('http://127.0.0.1:5173/auth/signup', {
+        name: data.name,
+        email: data.email,
+        age: data.age,
+        username: data.id,
+        password: data.pw,
+        passwordCheck: data.pwcheck
+      });
+      if (res.status === 201) {
+        alert("가입되었습니다!");
+        localStorage.setItem('token', res.data.token);
+        navigate('/login');
+      }
+    } catch (error) {
+      if (error.res) {
+        if (error.res.status === 409) {
+          setError('id', {
+            type: 'manual',
+            message: "username already exists"
+          });
+        } else if (error.res.status === 400) {
+          setError('pwcheck', {
+            type: 'manual',
+            message: "Passwords do not match"
+          });
+        }
+      }
+    }
   };
-  // const onSubmit = (data) => alert(JSON.stringify(data));
 
   const {
     register, 
     handleSubmit,
     watch,
+    setError,
     formState: { isSubmitting, errors, isValid, isSubmitSuccessful }
   } = useForm({ mode: "onChange" });
 
@@ -89,6 +122,14 @@ function Signup() {
               required: "이름을 입력해주세요!",
             })}/>
             {errors.name && <small>{errors.name.message}</small>}
+            <label htmlFor="id"></label>
+            <input id="id"
+            type="text"
+            placeholder="아이디를 입력해주세요" 
+            {...register("id", {
+              required: "아이디를 입력해주세요!",
+            })}/>
+            {errors.id && <small>{errors.id.message}</small>}
             <label htmlFor="email"></label>
             <input id="email" 
             type="email" 
@@ -150,10 +191,11 @@ function Signup() {
             <button type="submit">제출하기</button>
             {/* <button type="submit" disabled={!isValid || isSubmitting}>제출하기</button> */}
           </form>
+          {/* {serverError && <p>{serverError}</p>} */}
         </div>
         <div className="check">
-          <p>이미 아이디가 있으신가요?</p>
-          <Link to="/" className="homeLink">로그인 페이지로 이동하기</Link>
+          <Link to="/login" className="Link">이미 아이디가 있으신가요?</Link>
+          <Link to="/" className="Link">로그인 페이지로 이동하기</Link>
         </div>
       </div>
     </Container>

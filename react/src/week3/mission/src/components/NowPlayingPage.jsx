@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import Movie from "./Movie";
 import Loading from "./Loading";
+import Sidebar from "./Sidebar";
 
 const NowPlayingContainer = styled.div`
   .container {
@@ -20,8 +21,9 @@ const NowPlayingContainer = styled.div`
 function NowPlayingPage() {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showSidebar, setShowSidebar] = useState(false);
 
-  const options = {
+  const mOptions = {
     method: 'GET',
     url: 'https://api.themoviedb.org/3/movie/now_playing',
     params: {language: 'ko-KR', page: '1'},
@@ -34,21 +36,11 @@ function NowPlayingPage() {
   const showMovies = () => {
     setLoading(true);
     axios
-    .request(options)
+    .request(mOptions)
     .then(function (response) {
       setLoading(false);
       // console.log(response.data);
-      const info = response.data.results.map(datas => {
-        return {
-          id: datas.id,
-          title: datas.title,
-          poster_path: datas.poster_path,
-          vote_average: datas.vote_average,
-          overview: datas.overview,
-          release_date : datas.release_date,
-        };
-      });
-      setMovies(info);
+      setMovies(response.data.results);
     })
     .catch(function (error) {
       console.error(error);
@@ -78,6 +70,7 @@ function NowPlayingPage() {
               );
           })}
         </div>
+        <Sidebar showSidebar={showSidebar} />
       </div>
     </NowPlayingContainer>
   );
